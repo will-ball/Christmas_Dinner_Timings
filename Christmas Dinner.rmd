@@ -1,0 +1,61 @@
+---
+title: "Christmas Dinner Planner"
+output: html_notebook
+---
+
+## Library
+
+```{r}
+# Install packages if you don't have them already
+# install.packages(c("tidyverse", "tidylog", "lubridate"))
+
+library(tidyverse)
+library(tidylog) # Nice output for tidyverse functions
+library(lubridate) # For handling date and time
+```
+
+## Data
+
+```{r}
+# Turkey cooking time based on weight
+turkey_weight <- 4.5 # Weight in kilograms
+turkey_time <- (20 * turkey_weight) + if_else(turkey_weight >= 4, 90, 70)
+
+# Sample data
+meal_data <- data.frame(
+  item = c("Turkey", "Rest Turkey", "Stuffing", "Roast Potatoes", "Gravy", "Yorkshire Puddings", "Parsnips", "Leeks", "Sprouts", "Pigs in Blankets", "Bread Sauce", "Peas & Sweetcorn"),
+  cooking_time = c(
+    turkey_time, # Turkey - based on calculation above
+    15, # Rest
+    45, # Stuffing
+    45, # Roast Potatoes
+    10, # Gravy
+    20, # Yorkshire Puddings
+    40, # Parsnips
+    15, # Leeks
+    8,  # Sprouts
+    35, # Pigs in blankets
+    10, # Bread sauce
+    5   # Peas and sweetcorn
+  )
+)
+```
+
+## Calculation
+
+```{r}
+# Specified meal time
+meal_time <- ymd_hms("2023-12-25 14:30:00") # 
+
+# Calculate time to start cooking for each item
+meal_data <- meal_data %>%
+  mutate(cooking_time = as.numeric(cooking_time), # Convert cooking_time to numeric if needed
+         start_time = format(meal_time - lubridate::dminutes(cooking_time), "%H:%M:%S")) %>% # Format start_time for time of day
+  arrange(start_time)
+```
+
+## Output
+
+```{r}
+meal_data
+```
