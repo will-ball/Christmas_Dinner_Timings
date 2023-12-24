@@ -1,6 +1,8 @@
 ---
 title: "Christmas Dinner Planner"
 output: html_notebook
+author: William P Ball
+date: 2023-12-24
 ---
 
 ## Library
